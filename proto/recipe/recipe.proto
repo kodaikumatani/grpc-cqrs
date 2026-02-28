@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package recipe;
+
+option go_package = "github.com/kodaikumatani/grpc-cqrs/pkg/pb/recipe";
+
+import "google/protobuf/timestamp.proto";
+
+service RecipeService {
+  rpc CreateRecipe(CreateRecipeRequest) returns (CreateRecipeResponse);
+  rpc UpdateRecipe(UpdateRecipeRequest) returns (UpdateRecipeResponse);
+}
+
+message Recipe {
+  string id = 1;
+  string user_id = 2;
+  string title = 3;
+  string description = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message CreateRecipeRequest {
+  string user_id = 1;
+  string title = 2;
+  string description = 3;
+}
+
+message CreateRecipeResponse { string recipe_id = 1; }
+
+message UpdateRecipeRequest {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+}
+
+message UpdateRecipeResponse { bool success = 1; }
