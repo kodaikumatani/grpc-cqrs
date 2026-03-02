@@ -5,7 +5,6 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	pb "github.com/kodaikumatani/grpc-cqrs/pkg/pb/recipe"
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -17,14 +16,10 @@ type Handler struct {
 
 func NewHandler(
 	create *UseCase,
-) *Handler {
+) pb.RecipeServiceServer {
 	return &Handler{
 		usecase: create,
 	}
-}
-
-func (r *Handler) RegisterService(app *grpc.Server) {
-	pb.RegisterRecipeServiceServer(app, r)
 }
 
 type createRecipeRequest struct {
