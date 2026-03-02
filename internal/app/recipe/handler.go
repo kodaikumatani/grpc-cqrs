@@ -5,26 +5,21 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	pb "github.com/kodaikumatani/grpc-cqrs/pkg/pb/recipe"
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-type Handler struct {
+type handler struct {
 	pb.UnimplementedRecipeServiceServer
 	usecase *UseCase
 }
 
 func NewHandler(
 	create *UseCase,
-) *Handler {
-	return &Handler{
+) pb.RecipeServiceServer {
+	return &handler{
 		usecase: create,
 	}
-}
-
-func (r *Handler) RegisterService(app *grpc.Server) {
-	pb.RegisterRecipeServiceServer(app, r)
 }
 
 type createRecipeRequest struct {
@@ -33,7 +28,7 @@ type createRecipeRequest struct {
 	Description string `validate:"required"`
 }
 
-func (h *Handler) CreateRecipe(
+func (h *handler) CreateRecipe(
 	ctx context.Context,
 	in *pb.CreateRecipeRequest,
 ) (*pb.CreateRecipeResponse, error) {

@@ -25,8 +25,8 @@ func initializeServices(ctx context.Context, dsn string) (*services, func(), err
 	}
 	storage := recipe.NewRepository(pool)
 	useCase := recipe2.NewUseCase(storage)
-	handler := recipe2.NewHandler(useCase)
-	registrar := app.NewRegistrar(handler)
+	recipeServiceServer := recipe2.NewHandler(useCase)
+	registrar := app.NewRegistrar(recipeServiceServer)
 	mainServices := &services{
 		Registrar: registrar,
 	}

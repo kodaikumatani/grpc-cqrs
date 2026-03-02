@@ -1,16 +1,16 @@
 package app
 
 import (
-	"github.com/kodaikumatani/grpc-cqrs/internal/app/recipe"
+	pb "github.com/kodaikumatani/grpc-cqrs/pkg/pb/recipe"
 	"google.golang.org/grpc"
 )
 
 type Registrar struct {
-	recipeHandler *recipe.Handler
+	recipeHandler pb.RecipeServiceServer
 }
 
 func NewRegistrar(
-	recipeHandler *recipe.Handler,
+	recipeHandler pb.RecipeServiceServer,
 ) *Registrar {
 	return &Registrar{
 		recipeHandler: recipeHandler,
@@ -18,7 +18,7 @@ func NewRegistrar(
 }
 
 func (r *Registrar) Register(app *grpc.Server) *grpc.Server {
-	r.recipeHandler.RegisterService(app)
+	pb.RegisterRecipeServiceServer(app, r.recipeHandler)
 
 	return app
 }
