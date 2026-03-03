@@ -57,3 +57,38 @@ func (q *Queries) GetRecipe(ctx context.Context, id uuid.UUID) (Recipe, error) {
 	)
 	return i, err
 }
+
+const getRecipeWithUser = `-- name: GetRecipeWithUser :one
+SELECT r.id, r.user_id, r.title, r.description, r.created_at, r.updated_at,
+       u.name AS user_name, u.email AS user_email
+FROM recipes r
+JOIN users u ON r.user_id = u.id
+WHERE r.id = $1
+`
+
+type GetRecipeWithUserRow struct {
+	ID          uuid.UUID
+	UserID      string
+	Title       string
+	Description string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	UserName    string
+	UserEmail   string
+}
+
+func (q *Queries) GetRecipeWithUser(ctx context.Context, id uuid.UUID) (GetRecipeWithUserRow, error) {
+	row := q.db.QueryRow(ctx, getRecipeWithUser, id)
+	var i GetRecipeWithUserRow
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.Title,
+		&i.Description,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.UserName,
+		&i.UserEmail,
+	)
+	return i, err
+}

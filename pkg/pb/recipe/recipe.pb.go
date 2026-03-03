@@ -257,6 +257,7 @@ func (x *GetRecipeRequest) GetId() string {
 type GetRecipeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Recipe        *Recipe                `protobuf:"bytes,1,opt,name=recipe,proto3" json:"recipe,omitempty"`
+	User          *User                  `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -298,6 +299,73 @@ func (x *GetRecipeResponse) GetRecipe() *Recipe {
 	return nil
 }
 
+func (x *GetRecipeResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+type User struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *User) Reset() {
+	*x = User{}
+	mi := &file_recipe_recipe_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *User) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*User) ProtoMessage() {}
+
+func (x *User) ProtoReflect() protoreflect.Message {
+	mi := &file_recipe_recipe_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use User.ProtoReflect.Descriptor instead.
+func (*User) Descriptor() ([]byte, []int) {
+	return file_recipe_recipe_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *User) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *User) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *User) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
 type UpdateRecipeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -309,7 +377,7 @@ type UpdateRecipeRequest struct {
 
 func (x *UpdateRecipeRequest) Reset() {
 	*x = UpdateRecipeRequest{}
-	mi := &file_recipe_recipe_proto_msgTypes[5]
+	mi := &file_recipe_recipe_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -321,7 +389,7 @@ func (x *UpdateRecipeRequest) String() string {
 func (*UpdateRecipeRequest) ProtoMessage() {}
 
 func (x *UpdateRecipeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_recipe_recipe_proto_msgTypes[5]
+	mi := &file_recipe_recipe_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -334,7 +402,7 @@ func (x *UpdateRecipeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRecipeRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRecipeRequest) Descriptor() ([]byte, []int) {
-	return file_recipe_recipe_proto_rawDescGZIP(), []int{5}
+	return file_recipe_recipe_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UpdateRecipeRequest) GetId() string {
@@ -367,7 +435,7 @@ type UpdateRecipeResponse struct {
 
 func (x *UpdateRecipeResponse) Reset() {
 	*x = UpdateRecipeResponse{}
-	mi := &file_recipe_recipe_proto_msgTypes[6]
+	mi := &file_recipe_recipe_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -379,7 +447,7 @@ func (x *UpdateRecipeResponse) String() string {
 func (*UpdateRecipeResponse) ProtoMessage() {}
 
 func (x *UpdateRecipeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_recipe_recipe_proto_msgTypes[6]
+	mi := &file_recipe_recipe_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +460,7 @@ func (x *UpdateRecipeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRecipeResponse.ProtoReflect.Descriptor instead.
 func (*UpdateRecipeResponse) Descriptor() ([]byte, []int) {
-	return file_recipe_recipe_proto_rawDescGZIP(), []int{6}
+	return file_recipe_recipe_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateRecipeResponse) GetSuccess() bool {
@@ -423,9 +491,14 @@ const file_recipe_recipe_proto_rawDesc = "" +
 	"\x14CreateRecipeResponse\x12\x1b\n" +
 	"\trecipe_id\x18\x01 \x01(\tR\brecipeId\"\"\n" +
 	"\x10GetRecipeRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\";\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"]\n" +
 	"\x11GetRecipeResponse\x12&\n" +
-	"\x06recipe\x18\x01 \x01(\v2\x0e.recipe.RecipeR\x06recipe\"]\n" +
+	"\x06recipe\x18\x01 \x01(\v2\x0e.recipe.RecipeR\x06recipe\x12 \n" +
+	"\x04user\x18\x02 \x01(\v2\f.recipe.UserR\x04user\"@\n" +
+	"\x04User\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\"]\n" +
 	"\x13UpdateRecipeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
@@ -449,32 +522,34 @@ func file_recipe_recipe_proto_rawDescGZIP() []byte {
 	return file_recipe_recipe_proto_rawDescData
 }
 
-var file_recipe_recipe_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_recipe_recipe_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_recipe_recipe_proto_goTypes = []any{
 	(*Recipe)(nil),                // 0: recipe.Recipe
 	(*CreateRecipeRequest)(nil),   // 1: recipe.CreateRecipeRequest
 	(*CreateRecipeResponse)(nil),  // 2: recipe.CreateRecipeResponse
 	(*GetRecipeRequest)(nil),      // 3: recipe.GetRecipeRequest
 	(*GetRecipeResponse)(nil),     // 4: recipe.GetRecipeResponse
-	(*UpdateRecipeRequest)(nil),   // 5: recipe.UpdateRecipeRequest
-	(*UpdateRecipeResponse)(nil),  // 6: recipe.UpdateRecipeResponse
-	(*timestamppb.Timestamp)(nil), // 7: google.protobuf.Timestamp
+	(*User)(nil),                  // 5: recipe.User
+	(*UpdateRecipeRequest)(nil),   // 6: recipe.UpdateRecipeRequest
+	(*UpdateRecipeResponse)(nil),  // 7: recipe.UpdateRecipeResponse
+	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
 }
 var file_recipe_recipe_proto_depIdxs = []int32{
-	7, // 0: recipe.Recipe.created_at:type_name -> google.protobuf.Timestamp
-	7, // 1: recipe.Recipe.updated_at:type_name -> google.protobuf.Timestamp
+	8, // 0: recipe.Recipe.created_at:type_name -> google.protobuf.Timestamp
+	8, // 1: recipe.Recipe.updated_at:type_name -> google.protobuf.Timestamp
 	0, // 2: recipe.GetRecipeResponse.recipe:type_name -> recipe.Recipe
-	1, // 3: recipe.RecipeService.CreateRecipe:input_type -> recipe.CreateRecipeRequest
-	3, // 4: recipe.RecipeService.GetRecipe:input_type -> recipe.GetRecipeRequest
-	5, // 5: recipe.RecipeService.UpdateRecipe:input_type -> recipe.UpdateRecipeRequest
-	2, // 6: recipe.RecipeService.CreateRecipe:output_type -> recipe.CreateRecipeResponse
-	4, // 7: recipe.RecipeService.GetRecipe:output_type -> recipe.GetRecipeResponse
-	6, // 8: recipe.RecipeService.UpdateRecipe:output_type -> recipe.UpdateRecipeResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	5, // 3: recipe.GetRecipeResponse.user:type_name -> recipe.User
+	1, // 4: recipe.RecipeService.CreateRecipe:input_type -> recipe.CreateRecipeRequest
+	3, // 5: recipe.RecipeService.GetRecipe:input_type -> recipe.GetRecipeRequest
+	6, // 6: recipe.RecipeService.UpdateRecipe:input_type -> recipe.UpdateRecipeRequest
+	2, // 7: recipe.RecipeService.CreateRecipe:output_type -> recipe.CreateRecipeResponse
+	4, // 8: recipe.RecipeService.GetRecipe:output_type -> recipe.GetRecipeResponse
+	7, // 9: recipe.RecipeService.UpdateRecipe:output_type -> recipe.UpdateRecipeResponse
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_recipe_recipe_proto_init() }
@@ -488,7 +563,7 @@ func file_recipe_recipe_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_recipe_recipe_proto_rawDesc), len(file_recipe_recipe_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
