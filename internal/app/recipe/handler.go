@@ -76,12 +76,17 @@ func (h *handler) GetRecipe(
 
 	return &pb.GetRecipeResponse{
 		Recipe: &pb.Recipe{
-			Id:          result.ID.String(),
-			UserId:      result.UserID.String(),
+			Id:          result.ID,
+			UserId:      result.UserID,
 			Title:       result.Title,
 			Description: result.Description,
 			CreatedAt:   timestamppb.New(result.CreatedAt),
 			UpdatedAt:   timestamppb.New(result.UpdatedAt),
+		},
+		User: &pb.User{
+			Id:    result.UserID,
+			Name:  result.UserName,
+			Email: result.UserEmail,
 		},
 	}, nil
 }

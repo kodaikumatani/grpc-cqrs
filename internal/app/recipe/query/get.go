@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/kodaikumatani/grpc-cqrs/internal/app/recipe/domain"
 )
 
 type Query struct {
@@ -22,11 +21,11 @@ func NewQuery(
 func (q *Query) Get(
 	ctx context.Context,
 	id uuid.UUID,
-) (*domain.Recipe, error) {
-	recipe, err := q.storage.Get(ctx, id)
+) (*RecipeWithUser, error) {
+	result, err := q.storage.Get(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	return recipe, nil
+	return result, nil
 }
