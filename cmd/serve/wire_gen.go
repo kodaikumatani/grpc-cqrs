@@ -19,6 +19,7 @@ import (
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/db"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/db/command"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/db/query"
+	"github.com/kodaikumatani/grpc-cqrs-go/internal/encrypt"
 )
 
 // Injectors from wire.go:
@@ -31,7 +32,8 @@ func initializeServices(ctx context.Context, dsn string) (*services, func(), err
 	storage := command.NewRecipe(pool)
 	commandCommand := command2.NewCommand(storage)
 	queryStorage := query.NewRecipe(pool)
-	queryQuery := query2.NewQuery(queryStorage)
+	encryptor := encrypt.NewAESEncryptor()
+	queryQuery := query2.NewQuery(queryStorage, encryptor)
 	recipeServiceServer := recipe.NewHandler(commandCommand, queryQuery)
 	commandStorage := command.NewUser(pool)
 	command4 := command3.NewCommand(commandStorage)

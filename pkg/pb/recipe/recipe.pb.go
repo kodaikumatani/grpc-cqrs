@@ -470,6 +470,94 @@ func (x *UpdateRecipeResponse) GetSuccess() bool {
 	return false
 }
 
+type ExportRecipesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExportRecipesRequest) Reset() {
+	*x = ExportRecipesRequest{}
+	mi := &file_recipe_recipe_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExportRecipesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExportRecipesRequest) ProtoMessage() {}
+
+func (x *ExportRecipesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_recipe_recipe_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExportRecipesRequest.ProtoReflect.Descriptor instead.
+func (*ExportRecipesRequest) Descriptor() ([]byte, []int) {
+	return file_recipe_recipe_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ExportRecipesRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+type ExportRecipesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileUrl       string                 `protobuf:"bytes,1,opt,name=file_url,json=fileUrl,proto3" json:"file_url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExportRecipesResponse) Reset() {
+	*x = ExportRecipesResponse{}
+	mi := &file_recipe_recipe_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExportRecipesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExportRecipesResponse) ProtoMessage() {}
+
+func (x *ExportRecipesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_recipe_recipe_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExportRecipesResponse.ProtoReflect.Descriptor instead.
+func (*ExportRecipesResponse) Descriptor() ([]byte, []int) {
+	return file_recipe_recipe_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ExportRecipesResponse) GetFileUrl() string {
+	if x != nil {
+		return x.FileUrl
+	}
+	return ""
+}
+
 var File_recipe_recipe_proto protoreflect.FileDescriptor
 
 const file_recipe_recipe_proto_rawDesc = "" +
@@ -504,11 +592,16 @@ const file_recipe_recipe_proto_rawDesc = "" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\"0\n" +
 	"\x14UpdateRecipeResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\xe7\x01\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"/\n" +
+	"\x14ExportRecipesRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"2\n" +
+	"\x15ExportRecipesResponse\x12\x19\n" +
+	"\bfile_url\x18\x01 \x01(\tR\afileUrl2\xb5\x02\n" +
 	"\rRecipeService\x12I\n" +
 	"\fCreateRecipe\x12\x1b.recipe.CreateRecipeRequest\x1a\x1c.recipe.CreateRecipeResponse\x12@\n" +
 	"\tGetRecipe\x12\x18.recipe.GetRecipeRequest\x1a\x19.recipe.GetRecipeResponse\x12I\n" +
-	"\fUpdateRecipe\x12\x1b.recipe.UpdateRecipeRequest\x1a\x1c.recipe.UpdateRecipeResponseB2Z0github.com/kodaikumatani/grpc-cqrs-go/pkg/pb/recipeb\x06proto3"
+	"\fUpdateRecipe\x12\x1b.recipe.UpdateRecipeRequest\x1a\x1c.recipe.UpdateRecipeResponse\x12L\n" +
+	"\rExportRecipes\x12\x1c.recipe.ExportRecipesRequest\x1a\x1d.recipe.ExportRecipesResponseB5Z3github.com/kodaikumatani/grpc-cqrs-go/pkg/pb/recipeb\x06proto3"
 
 var (
 	file_recipe_recipe_proto_rawDescOnce sync.Once
@@ -522,7 +615,7 @@ func file_recipe_recipe_proto_rawDescGZIP() []byte {
 	return file_recipe_recipe_proto_rawDescData
 }
 
-var file_recipe_recipe_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_recipe_recipe_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_recipe_recipe_proto_goTypes = []any{
 	(*Recipe)(nil),                // 0: recipe.Recipe
 	(*CreateRecipeRequest)(nil),   // 1: recipe.CreateRecipeRequest
@@ -532,24 +625,28 @@ var file_recipe_recipe_proto_goTypes = []any{
 	(*User)(nil),                  // 5: recipe.User
 	(*UpdateRecipeRequest)(nil),   // 6: recipe.UpdateRecipeRequest
 	(*UpdateRecipeResponse)(nil),  // 7: recipe.UpdateRecipeResponse
-	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
+	(*ExportRecipesRequest)(nil),  // 8: recipe.ExportRecipesRequest
+	(*ExportRecipesResponse)(nil), // 9: recipe.ExportRecipesResponse
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
 }
 var file_recipe_recipe_proto_depIdxs = []int32{
-	8, // 0: recipe.Recipe.created_at:type_name -> google.protobuf.Timestamp
-	8, // 1: recipe.Recipe.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 2: recipe.GetRecipeResponse.recipe:type_name -> recipe.Recipe
-	5, // 3: recipe.GetRecipeResponse.user:type_name -> recipe.User
-	1, // 4: recipe.RecipeService.CreateRecipe:input_type -> recipe.CreateRecipeRequest
-	3, // 5: recipe.RecipeService.GetRecipe:input_type -> recipe.GetRecipeRequest
-	6, // 6: recipe.RecipeService.UpdateRecipe:input_type -> recipe.UpdateRecipeRequest
-	2, // 7: recipe.RecipeService.CreateRecipe:output_type -> recipe.CreateRecipeResponse
-	4, // 8: recipe.RecipeService.GetRecipe:output_type -> recipe.GetRecipeResponse
-	7, // 9: recipe.RecipeService.UpdateRecipe:output_type -> recipe.UpdateRecipeResponse
-	7, // [7:10] is the sub-list for method output_type
-	4, // [4:7] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	10, // 0: recipe.Recipe.created_at:type_name -> google.protobuf.Timestamp
+	10, // 1: recipe.Recipe.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 2: recipe.GetRecipeResponse.recipe:type_name -> recipe.Recipe
+	5,  // 3: recipe.GetRecipeResponse.user:type_name -> recipe.User
+	1,  // 4: recipe.RecipeService.CreateRecipe:input_type -> recipe.CreateRecipeRequest
+	3,  // 5: recipe.RecipeService.GetRecipe:input_type -> recipe.GetRecipeRequest
+	6,  // 6: recipe.RecipeService.UpdateRecipe:input_type -> recipe.UpdateRecipeRequest
+	8,  // 7: recipe.RecipeService.ExportRecipes:input_type -> recipe.ExportRecipesRequest
+	2,  // 8: recipe.RecipeService.CreateRecipe:output_type -> recipe.CreateRecipeResponse
+	4,  // 9: recipe.RecipeService.GetRecipe:output_type -> recipe.GetRecipeResponse
+	7,  // 10: recipe.RecipeService.UpdateRecipe:output_type -> recipe.UpdateRecipeResponse
+	9,  // 11: recipe.RecipeService.ExportRecipes:output_type -> recipe.ExportRecipesResponse
+	8,  // [8:12] is the sub-list for method output_type
+	4,  // [4:8] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_recipe_recipe_proto_init() }
@@ -563,7 +660,7 @@ func file_recipe_recipe_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_recipe_recipe_proto_rawDesc), len(file_recipe_recipe_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
