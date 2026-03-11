@@ -10,6 +10,7 @@ service RecipeService {
   rpc CreateRecipe(CreateRecipeRequest) returns (CreateRecipeResponse);
   rpc GetRecipe(GetRecipeRequest) returns (GetRecipeResponse);
   rpc UpdateRecipe(UpdateRecipeRequest) returns (UpdateRecipeResponse);
+  rpc ExportRecipes(ExportRecipesRequest) returns (ExportRecipesResponse);
 }
 
 message Recipe {
@@ -49,3 +50,7 @@ message UpdateRecipeRequest {
 }
 
 message UpdateRecipeResponse { bool success = 1; }
+
+message ExportRecipesRequest { string user_id = 1; }
+
+message ExportRecipesResponse { string file_url = 1; }

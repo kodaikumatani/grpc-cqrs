@@ -17,6 +17,31 @@ func NewRecipe(pool *pgxpool.Pool) query.Storage {
 	return &recipe{queries: gen.New(pool)}
 }
 
+func (r *recipe) ListByUserID(ctx context.Context, userID string, limit, offset int32) ([]*query.Recipe, error) {
+	rows, err := r.queries.ListRecipesByUserID(ctx, gen.ListRecipesByUserIDParams{
+		UserID: userID,
+		Limit:  limit,
+		Offset: offset,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	result := make([]*query.Recipe, 0, len(rows))
+	for _, row := range rows {
+		result = append(result, &query.Recipe{
+			ID:          row.ID.String(),
+			UserID:      row.UserID,
+			Title:       row.Title,
+			Description: row.Description,
+			CreatedAt:   row.CreatedAt,
+			UpdatedAt:   row.UpdatedAt,
+		})
+	}
+
+	return result, nil
+}
+
 func (r *recipe) Get(ctx context.Context, id uuid.UUID) (*query.RecipeWithUser, error) {
 	row, err := r.queries.GetRecipeWithUser(ctx, id)
 	if err != nil {

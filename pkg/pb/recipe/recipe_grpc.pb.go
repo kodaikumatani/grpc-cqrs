@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	RecipeService_CreateRecipe_FullMethodName = "/recipe.RecipeService/CreateRecipe"
-	RecipeService_GetRecipe_FullMethodName    = "/recipe.RecipeService/GetRecipe"
-	RecipeService_UpdateRecipe_FullMethodName = "/recipe.RecipeService/UpdateRecipe"
+	RecipeService_CreateRecipe_FullMethodName  = "/recipe.RecipeService/CreateRecipe"
+	RecipeService_GetRecipe_FullMethodName     = "/recipe.RecipeService/GetRecipe"
+	RecipeService_UpdateRecipe_FullMethodName  = "/recipe.RecipeService/UpdateRecipe"
+	RecipeService_ExportRecipes_FullMethodName = "/recipe.RecipeService/ExportRecipes"
 )
 
 // RecipeServiceClient is the client API for RecipeService service.
@@ -31,6 +32,7 @@ type RecipeServiceClient interface {
 	CreateRecipe(ctx context.Context, in *CreateRecipeRequest, opts ...grpc.CallOption) (*CreateRecipeResponse, error)
 	GetRecipe(ctx context.Context, in *GetRecipeRequest, opts ...grpc.CallOption) (*GetRecipeResponse, error)
 	UpdateRecipe(ctx context.Context, in *UpdateRecipeRequest, opts ...grpc.CallOption) (*UpdateRecipeResponse, error)
+	ExportRecipes(ctx context.Context, in *ExportRecipesRequest, opts ...grpc.CallOption) (*ExportRecipesResponse, error)
 }
 
 type recipeServiceClient struct {
@@ -71,6 +73,16 @@ func (c *recipeServiceClient) UpdateRecipe(ctx context.Context, in *UpdateRecipe
 	return out, nil
 }
 
+func (c *recipeServiceClient) ExportRecipes(ctx context.Context, in *ExportRecipesRequest, opts ...grpc.CallOption) (*ExportRecipesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExportRecipesResponse)
+	err := c.cc.Invoke(ctx, RecipeService_ExportRecipes_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RecipeServiceServer is the server API for RecipeService service.
 // All implementations must embed UnimplementedRecipeServiceServer
 // for forward compatibility.
@@ -78,6 +90,7 @@ type RecipeServiceServer interface {
 	CreateRecipe(context.Context, *CreateRecipeRequest) (*CreateRecipeResponse, error)
 	GetRecipe(context.Context, *GetRecipeRequest) (*GetRecipeResponse, error)
 	UpdateRecipe(context.Context, *UpdateRecipeRequest) (*UpdateRecipeResponse, error)
+	ExportRecipes(context.Context, *ExportRecipesRequest) (*ExportRecipesResponse, error)
 	mustEmbedUnimplementedRecipeServiceServer()
 }
 
@@ -96,6 +109,9 @@ func (UnimplementedRecipeServiceServer) GetRecipe(context.Context, *GetRecipeReq
 }
 func (UnimplementedRecipeServiceServer) UpdateRecipe(context.Context, *UpdateRecipeRequest) (*UpdateRecipeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateRecipe not implemented")
+}
+func (UnimplementedRecipeServiceServer) ExportRecipes(context.Context, *ExportRecipesRequest) (*ExportRecipesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ExportRecipes not implemented")
 }
 func (UnimplementedRecipeServiceServer) mustEmbedUnimplementedRecipeServiceServer() {}
 func (UnimplementedRecipeServiceServer) testEmbeddedByValue()                       {}
@@ -172,6 +188,24 @@ func _RecipeService_UpdateRecipe_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RecipeService_ExportRecipes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExportRecipesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RecipeServiceServer).ExportRecipes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RecipeService_ExportRecipes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RecipeServiceServer).ExportRecipes(ctx, req.(*ExportRecipesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RecipeService_ServiceDesc is the grpc.ServiceDesc for RecipeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -190,6 +224,10 @@ var RecipeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateRecipe",
 			Handler:    _RecipeService_UpdateRecipe_Handler,
+		},
+		{
+			MethodName: "ExportRecipes",
+			Handler:    _RecipeService_ExportRecipes_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

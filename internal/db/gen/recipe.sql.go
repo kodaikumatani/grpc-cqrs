@@ -92,3 +92,44 @@ func (q *Queries) GetRecipeWithUser(ctx context.Context, id uuid.UUID) (GetRecip
 	)
 	return i, err
 }
+
+const listRecipesByUserID = `-- name: ListRecipesByUserID :many
+SELECT id, user_id, title, description, created_at, updated_at
+FROM recipes
+WHERE user_id = $1
+ORDER BY created_at DESC
+LIMIT $2 OFFSET $3
+`
+
+type ListRecipesByUserIDParams struct {
+	UserID string
+	Limit  int32
+	Offset int32
+}
+
+func (q *Queries) ListRecipesByUserID(ctx context.Context, arg ListRecipesByUserIDParams) ([]Recipe, error) {
+	rows, err := q.db.Query(ctx, listRecipesByUserID, arg.UserID, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Recipe
+	for rows.Next() {
+		var i Recipe
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.Title,
+			&i.Description,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

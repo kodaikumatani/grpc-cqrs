@@ -90,3 +90,28 @@ func (h *handler) GetRecipe(
 		},
 	}, nil
 }
+func (h *handler) ExportRecipes(
+	ctx context.Context,
+	in *pb.ExportRecipesRequest,
+) (*pb.ExportRecipesResponse, error) {
+	request := struct {
+		UserID string `validate:"required"`
+	}{
+		UserID: in.GetUserId(),
+	}
+
+	if err := validator.New().Struct(request); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	result, err := h.query.Export(ctx, request.UserID)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	if result == nil {
+		return nil, status.Error(codes.NotFound, "no recipes found")
+	}
+
+	return &pb.ExportRecipesResponse{FileUrl: *result}, nil
+}
