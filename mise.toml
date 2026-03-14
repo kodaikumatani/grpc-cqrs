@@ -6,3 +6,16 @@ grpcurl = "latest"
 
 [env]
 DATABASE_URL = "postgres://gcook:p4ssw0rd!@localhost:25432/gcook"
+AES_KEY = "fb3f4131afeaf8a802e116cf9ad98a61f197d97b2443a9250746d76e6f2c73d8"
+
+# Object store: "minio" (default) or "gcs"
+OBJECT_STORE_BACKEND = "minio"
+
+# MinIO
+MINIO_ENDPOINT = "localhost:9000"
+MINIO_ACCESS_KEY = "minioadmin"
+MINIO_SECRET_KEY = "minioadmin"
+MINIO_USE_SSL = "false"
+
+# fake-gcs-server
+GCS_ENDPOINT = "http://localhost:4443/storage/v1/"

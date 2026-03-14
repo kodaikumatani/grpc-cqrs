@@ -20,6 +20,7 @@ import (
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/db/command"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/db/query"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/encrypt"
+	"github.com/kodaikumatani/grpc-cqrs-go/internal/objectstore"
 )
 
 // Injectors from wire.go:
@@ -33,7 +34,12 @@ func initializeServices(ctx context.Context, dsn string) (*services, func(), err
 	commandCommand := command2.NewCommand(storage)
 	queryStorage := query.NewRecipe(pool)
 	encryptor := encrypt.NewAESEncryptor()
-	queryQuery := query2.NewQuery(queryStorage, encryptor)
+	uploader, cleanup2, err := objectstore.ProvideUploader(ctx)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	queryQuery := query2.NewQuery(queryStorage, encryptor, uploader)
 	recipeServiceServer := recipe.NewHandler(commandCommand, queryQuery)
 	commandStorage := command.NewUser(pool)
 	command4 := command3.NewCommand(commandStorage)
@@ -43,6 +49,7 @@ func initializeServices(ctx context.Context, dsn string) (*services, func(), err
 		Registrar: registrar,
 	}
 	return mainServices, func() {
+		cleanup2()
 		cleanup()
 	}, nil
 }

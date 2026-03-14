@@ -3,27 +3,35 @@ package query
 import (
 	"context"
 	"encoding/csv"
+	"fmt"
 	"os"
 
 	"github.com/google/uuid"
 	"github.com/jszwec/csvutil"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/encrypt"
+	"github.com/kodaikumatani/grpc-cqrs-go/internal/objectstore"
 )
 
-const batchSize int32 = 100
+const (
+	batchSize    int32  = 100
+	exportBucket string = "exports"
+)
 
 type Query struct {
 	storage   Storage
 	encryptor encrypt.Encryptor
+	uploader  objectstore.Uploader
 }
 
 func NewQuery(
 	storage Storage,
 	encryptor encrypt.Encryptor,
+	uploader objectstore.Uploader,
 ) *Query {
 	return &Query{
 		storage:   storage,
 		encryptor: encryptor,
+		uploader:  uploader,
 	}
 }
 
@@ -47,6 +55,7 @@ func (q *Query) Export(
 	if err != nil {
 		return nil, err
 	}
+	defer os.Remove(f.Name())
 	defer f.Close()
 
 	encWriter, err := q.encryptor.NewWriter(f)
@@ -78,7 +87,18 @@ func (q *Query) Export(
 		return nil, err
 	}
 
-	path := f.Name()
+	// Flush encrypted data before uploading.
+	encWriter.Close()
 
-	return &path, nil
+	if _, err := f.Seek(0, 0); err != nil {
+		return nil, err
+	}
+
+	key := fmt.Sprintf("%s/%s.enc", userID, uuid.New().String())
+	if err := q.uploader.Upload(ctx, exportBucket, key, f); err != nil {
+		return nil, err
+	}
+
+	objectPath := fmt.Sprintf("%s/%s", exportBucket, key)
+	return &objectPath, nil
 }
