@@ -108,7 +108,6 @@ func (x *Recipe) GetUpdatedAt() *timestamppb.Timestamp {
 
 type CreateRecipeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -143,13 +142,6 @@ func (x *CreateRecipeRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateRecipeRequest.ProtoReflect.Descriptor instead.
 func (*CreateRecipeRequest) Descriptor() ([]byte, []int) {
 	return file_recipe_recipe_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CreateRecipeRequest) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
 }
 
 func (x *CreateRecipeRequest) GetTitle() string {
@@ -483,9 +475,8 @@ const file_recipe_recipe_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"f\n" +
-	"\x13CreateRecipeRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x14\n" +
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"M\n" +
+	"\x13CreateRecipeRequest\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\"3\n" +
 	"\x14CreateRecipeResponse\x12\x1b\n" +
@@ -508,7 +499,7 @@ const file_recipe_recipe_proto_rawDesc = "" +
 	"\rRecipeService\x12I\n" +
 	"\fCreateRecipe\x12\x1b.recipe.CreateRecipeRequest\x1a\x1c.recipe.CreateRecipeResponse\x12@\n" +
 	"\tGetRecipe\x12\x18.recipe.GetRecipeRequest\x1a\x19.recipe.GetRecipeResponse\x12I\n" +
-	"\fUpdateRecipe\x12\x1b.recipe.UpdateRecipeRequest\x1a\x1c.recipe.UpdateRecipeResponseB2Z0github.com/kodaikumatani/grpc-cqrs-go/pkg/pb/recipeb\x06proto3"
+	"\fUpdateRecipe\x12\x1b.recipe.UpdateRecipeRequest\x1a\x1c.recipe.UpdateRecipeResponseB5Z3github.com/kodaikumatani/grpc-cqrs-go/pkg/pb/recipeb\x06proto3"
 
 var (
 	file_recipe_recipe_proto_rawDescOnce sync.Once

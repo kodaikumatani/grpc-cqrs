@@ -2,15 +2,21 @@ package recipe
 
 import (
 	"context"
+	"errors"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/app/recipe/command"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/app/recipe/query"
+	"github.com/kodaikumatani/grpc-cqrs-go/internal/authn"
 	pb "github.com/kodaikumatani/grpc-cqrs-go/pkg/pb/recipe"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
+)
+
+var (
+	ErrUserNotFound = errors.New("user not found")
 )
 
 type handler struct {
@@ -34,11 +40,9 @@ func (h *handler) CreateRecipe(
 	in *pb.CreateRecipeRequest,
 ) (*pb.CreateRecipeResponse, error) {
 	request := struct {
-		UserID      string `validate:"required"`
 		Title       string `validate:"required"`
 		Description string `validate:"required"`
 	}{
-		UserID:      in.GetUserId(),
 		Title:       in.GetTitle(),
 		Description: in.GetDescription(),
 	}
@@ -47,8 +51,13 @@ func (h *handler) CreateRecipe(
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
+	userID, ok := ctx.Value(authn.UIDKey{}).(string)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, ErrUserNotFound.Error())
+	}
+
 	result, err := h.command.Create(ctx,
-		request.UserID,
+		userID,
 		request.Title,
 		request.Description)
 	if err != nil {

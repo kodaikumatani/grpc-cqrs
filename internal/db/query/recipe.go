@@ -25,7 +25,7 @@ func (r *recipe) Get(ctx context.Context, id uuid.UUID) (*query.RecipeWithUser, 
 
 	return &query.RecipeWithUser{
 		ID:          row.ID.String(),
-		UserID:      row.UserID,
+		UserID:      row.UserID.String(),
 		Title:       row.Title,
 		Description: row.Description,
 		CreatedAt:   row.CreatedAt,

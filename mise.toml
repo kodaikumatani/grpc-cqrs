@@ -3,6 +3,7 @@ atlas = "latest"
 go = "1.25.7"
 grpcurl = "latest"
 "aqua:sqlc-dev/sqlc" = "latest"
+buf = "latest"
 
 [env]
 DATABASE_URL = "postgres://gcook:p4ssw0rd!@localhost:25432/gcook"

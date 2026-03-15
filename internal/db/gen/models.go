@@ -8,11 +8,12 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	ulid "github.com/oklog/ulid/v2"
 )
 
 type Recipe struct {
 	ID          uuid.UUID
-	UserID      string
+	UserID      ulid.ULID
 	Title       string
 	Description string
 	CreatedAt   time.Time
@@ -20,7 +21,7 @@ type Recipe struct {
 }
 
 type User struct {
-	ID        string
+	ID        ulid.ULID
 	Name      string
 	Email     string
 	CreatedAt time.Time
