@@ -8,6 +8,8 @@ package gen
 import (
 	"context"
 	"time"
+
+	ulid "github.com/oklog/ulid/v2"
 )
 
 const createUser = `-- name: CreateUser :exec
@@ -16,7 +18,7 @@ VALUES ($1, $2, $3, $4, $5)
 `
 
 type CreateUserParams struct {
-	ID        string
+	ID        ulid.ULID
 	Name      string
 	Email     string
 	CreatedAt time.Time

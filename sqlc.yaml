@@ -1,7 +1,7 @@
 version: "2"
 sql:
   - engine: "postgresql"
-    queries: "database/queries/recipe.sql"
+    queries: "database/queries"
     schema: "database/migrations"
     gen:
       go:
@@ -15,19 +15,13 @@ sql:
             go_type: "time.Time"
           - db_type: "pg_catalog.timestamp"
             go_type: "time.Time"
-
-  - engine: "postgresql"
-    queries: "database/queries/user.sql"
-    schema: "database/migrations"
-    gen:
-      go:
-        package: "gen"
-        out: "internal/db/gen"
-        sql_package: "pgx/v5"
-        overrides:
-          - db_type: "uuid"
-            go_type: "github.com/google/uuid.UUID"
-          - db_type: "timestamp"
-            go_type: "time.Time"
-          - db_type: "pg_catalog.timestamp"
-            go_type: "time.Time"
+          - column: "recipes.user_id"
+            go_type:
+              import: "github.com/oklog/ulid/v2"
+              package: "ulid"
+              type: "ULID"
+          - column: "users.id"
+            go_type:
+              import: "github.com/oklog/ulid/v2"
+              package: "ulid"
+              type: "ULID"

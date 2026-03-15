@@ -35,12 +35,12 @@ func run(ctx context.Context) error {
 
 	s := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
-			interceptor.RecoveryUnaryInterceptor(),
 			interceptor.LoggingUnaryInterceptor(),
+			interceptor.RecoveryUnaryInterceptor(),
 		),
 		grpc.ChainStreamInterceptor(
-			interceptor.RecoveryStreamInterceptor(),
 			interceptor.LoggingStreamInterceptor(),
+			interceptor.RecoveryStreamInterceptor(),
 		),
 	)
 	s = services.Register(s)

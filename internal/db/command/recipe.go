@@ -20,7 +20,7 @@ func NewRecipe(pool *pgxpool.Pool) command.Storage {
 func (r *recipe) Create(ctx context.Context, rec *domain.Recipe) error {
 	return r.queries.CreateRecipe(ctx, gen.CreateRecipeParams{
 		ID:          rec.ID,
-		UserID:      rec.UserID.String(),
+		UserID:      rec.UserID,
 		Title:       rec.Title,
 		Description: rec.Description,
 		CreatedAt:   rec.CreatedAt,
