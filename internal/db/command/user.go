@@ -7,6 +7,7 @@ import (
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/app/user/command"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/app/user/domain"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/db/gen"
+	"github.com/oklog/ulid/v2"
 )
 
 type user struct {
@@ -18,8 +19,13 @@ func NewUser(pool *pgxpool.Pool) command.Storage {
 }
 
 func (u *user) Create(ctx context.Context, usr *domain.User) error {
+	id, err := ulid.Parse(usr.ID)
+	if err != nil {
+		return err
+	}
+
 	return u.queries.CreateUser(ctx, gen.CreateUserParams{
-		ID:        usr.ID,
+		ID:        id,
 		Name:      usr.Name,
 		Email:     usr.Email,
 		CreatedAt: usr.CreatedAt,
