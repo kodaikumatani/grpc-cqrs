@@ -16,7 +16,9 @@ import (
 	query2 "github.com/kodaikumatani/grpc-cqrs-go/internal/app/recipe/query"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/app/user"
 	command3 "github.com/kodaikumatani/grpc-cqrs-go/internal/app/user/command"
+	authz2 "github.com/kodaikumatani/grpc-cqrs-go/internal/authz"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/db"
+	"github.com/kodaikumatani/grpc-cqrs-go/internal/db/authz"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/db/command"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/db/query"
 )
@@ -29,9 +31,11 @@ func initializeServices(ctx context.Context, dsn string) (*services, func(), err
 		return nil, nil, err
 	}
 	storage := command.NewRecipe(pool)
-	commandCommand := command2.NewCommand(storage)
+	authzStorage := authz.NewTuple(pool)
+	checker := authz2.NewChecker(authzStorage)
+	commandCommand := command2.NewCommand(storage, checker)
 	queryStorage := query.NewRecipe(pool)
-	queryQuery := query2.NewQuery(queryStorage)
+	queryQuery := query2.NewQuery(queryStorage, checker)
 	recipeServiceServer := recipe.NewHandler(commandCommand, queryQuery)
 	commandStorage := command.NewUser(pool)
 	command4 := command3.NewCommand(commandStorage)
