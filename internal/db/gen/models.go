@@ -5,11 +5,56 @@
 package gen
 
 import (
+	"database/sql/driver"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
 	ulid "github.com/oklog/ulid/v2"
 )
+
+type Visibility string
+
+const (
+	VisibilityPublic     Visibility = "public"
+	VisibilityPrivate    Visibility = "private"
+	VisibilityRestricted Visibility = "restricted"
+)
+
+func (e *Visibility) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = Visibility(s)
+	case string:
+		*e = Visibility(s)
+	default:
+		return fmt.Errorf("unsupported scan type for Visibility: %T", src)
+	}
+	return nil
+}
+
+type NullVisibility struct {
+	Visibility Visibility
+	Valid      bool // Valid is true if Visibility is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullVisibility) Scan(value interface{}) error {
+	if value == nil {
+		ns.Visibility, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.Visibility.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullVisibility) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.Visibility), nil
+}
 
 type Recipe struct {
 	ID          uuid.UUID
@@ -18,6 +63,16 @@ type Recipe struct {
 	Description string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+	Visibility  Visibility
+}
+
+type RelationTuple struct {
+	ID         uuid.UUID
+	ObjectType string
+	ObjectID   string
+	Relation   string
+	UserID     ulid.ULID
+	CreatedAt  time.Time
 }
 
 type User struct {

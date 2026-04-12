@@ -45,9 +45,18 @@ FROM recipes
 WHERE id = $1
 `
 
-func (q *Queries) GetRecipe(ctx context.Context, id uuid.UUID) (Recipe, error) {
+type GetRecipeRow struct {
+	ID          uuid.UUID
+	UserID      ulid.ULID
+	Title       string
+	Description string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+}
+
+func (q *Queries) GetRecipe(ctx context.Context, id uuid.UUID) (GetRecipeRow, error) {
 	row := q.db.QueryRow(ctx, getRecipe, id)
-	var i Recipe
+	var i GetRecipeRow
 	err := row.Scan(
 		&i.ID,
 		&i.UserID,

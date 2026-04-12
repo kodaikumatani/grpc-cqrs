@@ -1,0 +1,11 @@
+-- name: CreateTuple :exec
+INSERT INTO relation_tuples (id, object_type, object_id, relation, user_id, created_at)
+VALUES ($1, $2, $3, $4, $5, $6);
+
+-- name: DeleteTuple :exec 
+DELETE FROM relation_tuples WHERE id = $1;
+
+-- name: ListRelations :many
+SELECT id, object_type, object_id, relation, user_id, created_at
+FROM relation_tuples
+WHERE object_type = $1 AND object_id = $2 AND user_id = $3;
