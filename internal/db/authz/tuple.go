@@ -42,12 +42,12 @@ func (t *tuple) DeleteTuple(
 
 func (t *tuple) ListRelations(
 	ctx context.Context,
-	objectType,
+	objectType authz.ObjectType,
 	objectID string,
 	userID ulid.ULID,
 ) ([]*authz.Tuple, error) {
 	rows, err := t.queries.ListRelations(ctx, gen.ListRelationsParams{
-		ObjectType: objectType,
+		ObjectType: objectType.String(),
 		ObjectID:   objectID,
 		UserID:     userID,
 	})

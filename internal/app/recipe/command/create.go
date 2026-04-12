@@ -6,19 +6,23 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/kodaikumatani/grpc-cqrs-go/internal/app/recipe/domain"
+	"github.com/kodaikumatani/grpc-cqrs-go/internal/authz"
 	"github.com/oklog/ulid/v2"
 	"github.com/samber/lo"
 )
 
 type Command struct {
 	storage Storage
+	checker authz.Checker
 }
 
 func NewCommand(
 	storage Storage,
+	checker authz.Checker,
 ) *Command {
 	return &Command{
 		storage: storage,
+		checker: checker,
 	}
 }
 
@@ -54,6 +58,11 @@ func (u *Command) Update(
 	id uuid.UUID,
 	title, description string,
 ) error {
+	if err := u.checker.
+		CanEditRecipe(ctx, id.String()); err != nil {
+		return err
+	}
+
 	recipe, err := u.storage.Get(ctx, id)
 	if err != nil {
 		return err

@@ -5,5 +5,5 @@ import (
 )
 
 var Set = wire.NewSet(
-	NewChecker,
+	NewTuple,
 )

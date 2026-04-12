@@ -11,11 +11,19 @@ type Checker struct {
 	storage Storage
 }
 
-func NewChecker(storage Storage) *Checker {
-	return &Checker{storage: storage}
+func NewChecker(storage Storage) Checker {
+	return Checker{storage: storage}
 }
 
-func (c *Checker) Check(
+func (c Checker) CanViewRecipe(ctx context.Context, recipeID string) error {
+	return c.check(ctx, ObjectRecipe, recipeID, PermViewRecipe)
+}
+
+func (c Checker) CanEditRecipe(ctx context.Context, recipeID string) error {
+	return c.check(ctx, ObjectRecipe, recipeID, PermEditRecipe)
+}
+
+func (c Checker) check(
 	ctx context.Context,
 	objectType ObjectType,
 	objectID string,
